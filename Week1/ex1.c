@@ -61,8 +61,9 @@ int main(){
   startSentence = 1;
   while(!feof(fin)){
     if ((c=fgetc(fin)) != EOF){
-      // if a word is alphabet add it to str string
-      if(isAlphabet(c)){
+      /* if a character is an alphabet or a '-' character (but not at start of word), add it to str string
+       */
+      if(isAlphabet(c) || (c == '-' && i != 0)){
 	str[i++] = c;
       } else {
 	str[i] = '\0';
