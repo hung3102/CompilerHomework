@@ -4,7 +4,7 @@
 #include "utils.h"
 
 #define MAX 50
-#define MAX_WORDS 100
+#define MAX_WORDS 100000
 
 typedef struct Index{
   char* word;
@@ -106,6 +106,10 @@ int checkWord(char* str, int isStartSentence){
 
   // check the first letter
   if (('A' <= str[0] && 'Z'>= str[0]) && !isStartSentence){
+    return 0;
+  }
+
+  if (str[strlen(str)-1] == '-'){
     return 0;
   }
 
