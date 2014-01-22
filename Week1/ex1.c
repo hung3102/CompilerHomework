@@ -4,7 +4,7 @@
 #include "utils.h"
 
 #define MAX 50
-#define MAX_WORDS 100
+#define MAX_WORDS 100000
 
 typedef struct Index{
   char* word;
@@ -52,8 +52,11 @@ int main(){
   qsort(stop.words,stop.size,sizeof(char*),compare_str);
       
   // read text from vanban.txt file
-  if((fin = fopen("vanban.txt","r")) == NULL){
-    printf("Cant read file vanban.txt\n");exit(1);
+  char name[100];
+  printf("Nhap ten file:");
+  scanf("%s",name);
+  if((fin = fopen(name,"r")) == NULL){
+    printf("Cant read file %s\n",name);exit(1);
   }
 
   i=0;
@@ -68,12 +71,13 @@ int main(){
       } else {
 	str[i] = '\0';
 	if(checkWord(str,startSentence)){
+	  //	  printf(">%s\n",str);
 	  char* buff = (char*)malloc(sizeof(char)*(strlen(str)+1));
 	  strcpy(buff,str);
 	  addWord(buff,i_line);
 	}
 
-	if (c == '\r'){
+	if (c == '\r' || c == '\n'){
 	  i_line++;
 	}
 	startSentence = isEndSentenceCharacter(c);
@@ -106,6 +110,10 @@ int checkWord(char* str, int isStartSentence){
 
   // check the first letter
   if (('A' <= str[0] && 'Z'>= str[0]) && !isStartSentence){
+    return 0;
+  }
+
+  if (str[strlen(str)-1] == '-'){
     return 0;
   }
 
