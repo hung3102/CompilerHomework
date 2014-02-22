@@ -75,30 +75,16 @@ Token* readIdentKeyword(void) {
 }
 
 Token* readNumber(void) {
-  Token *token = makeToken(TK_NONE, lineNo, colNo);
+  Token *token = makeToken(TK_NUMBER, lineNo, colNo);
   int count = 0;
-  int isFloat = 0;
 
-  while ((currentChar != EOF) && ((charCodes[currentChar] == CHAR_DIGIT )|| (charCodes[currentChar] == CHAR_PERIOD && !isFloat))) {
-    if (charCodes[currentChar] == CHAR_PERIOD)
-      isFloat = 1;
+  while ((currentChar != EOF) && (charCodes[currentChar] == CHAR_DIGIT)) {
     token->string[count++] = (char)currentChar;
     readChar();
   }
 
-  if (charCodes[currentChar] == CHAR_PERIOD){
-    error(ERR_INVALIDNUMBER, token->lineNo, token->colNo);
-    return token;
-  }
-
   token->string[count] = '\0';
-  if (isFloat){
-    token->tokenType = TK_FLOAT;
-    token->value = atof(token->string);
-  } else {
-    token->tokenType = TK_INT;    
-    token->value = atoi(token->string);
-  }
+  token->value = atoi(token->string);
   return token;
 }
 
@@ -266,9 +252,7 @@ void printToken(Token *token) {
   switch (token->tokenType) {
   case TK_NONE: printf("TK_NONE\n"); break;
   case TK_IDENT: printf("TK_IDENT(%s)\n", token->string); break;
-  case TK_INT: printf("TK_INT(%s)\n", token->string); break;
-  case TK_FLOAT: printf("TK_FLOAT(%s)\n", token->string); break;
-  case TK_STR: printf("TK_STR(%s)\n", token->string); break;
+  case TK_NUMBER: printf("TK_NUMBER(%s)\n", token->string); break;
   case TK_CHAR: printf("TK_CHAR(\'%s\')\n", token->string); break;
   case TK_EOF: printf("TK_EOF\n"); break;
 
@@ -277,9 +261,7 @@ void printToken(Token *token) {
   case KW_TYPE: printf("KW_TYPE\n"); break;
   case KW_VAR: printf("KW_VAR\n"); break;
   case KW_INTEGER: printf("KW_INTEGER\n"); break;
-  case KW_FLOAT: printf("KW_FLOAT\n"); break;
   case KW_CHAR: printf("KW_CHAR\n"); break;
-  case KW_STR: printf("KW_STR\n"); break;
   case KW_ARRAY: printf("KW_ARRAY\n"); break;
   case KW_OF: printf("KW_OF\n"); break;
   case KW_FUNCTION: printf("KW_FUNCTION\n"); break;
@@ -315,23 +297,5 @@ void printToken(Token *token) {
   case SB_LSEL: printf("SB_LSEL\n"); break;
   case SB_RSEL: printf("SB_RSEL\n"); break;
   }
-}
-
-int scan(char *fileName) {
-  Token *token;
-
-  if (openInputStream(fileName) == IO_ERROR)
-    return IO_ERROR;
-
-  token = getToken();
-  while (token->tokenType != TK_EOF) {
-    printToken(token);
-    free(token);
-    token = getToken();
-  }
-
-  free(token);
-  closeInputStream();
-  return IO_SUCCESS;
 }
 

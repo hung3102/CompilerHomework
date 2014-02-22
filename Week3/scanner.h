@@ -12,6 +12,5 @@
 Token* getToken(void);
 Token* getValidToken(void);
 void printToken(Token *token);
-int scan(char* fileName);
 
 #endif

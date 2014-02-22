@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 #include "reader.h"
-#include "scanner.h"
+#include "parser.h"
 
 /******************************************************************/
 
@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     return -1;
   }
 
-  if (scan(argv[1]) == IO_ERROR) {
+  if (compile(argv[1]) == IO_ERROR) {
     printf("Can\'t read input file!\n");
     return -1;
   }

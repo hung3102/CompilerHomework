@@ -1,27 +1,34 @@
-/**
- * @author: pvhau
- * @tag: compiler-homework
- * @subject: scanner
+/* 
+ * @copyright (c) 2008, Hedspi, Hanoi University of Technology
+ * @author Huu-Duc Nguyen
+ * @version 1.0
  */
 
-#include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "error.h"
 
-void error(ErrorCode err, int lineNo, int colNo){
-  char errorStr[200];
-  switch(err){
+void error(ErrorCode err, int lineNo, int colNo) {
+  switch (err) {
   case ERR_ENDOFCOMMENT:
-    strcpy(errorStr, ERM_ENDOFCOMMENT);break;
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_ENDOFCOMMENT);
+    break;
   case ERR_IDENTTOOLONG:
-    strcpy(errorStr, ERM_IDENTTOOLONG);break;
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_IDENTTOOLONG);
+    break;
   case ERR_INVALIDCHARCONSTANT:
-    strcpy(errorStr, ERM_INVALIDCHARCONSTANT);break;
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDCHARCONSTANT);
+    break;
   case ERR_INVALIDSYMBOL:
-    strcpy(errorStr, ERM_INVALIDSYMBOL);break;
-  default:
-    strcpy(errorStr, "Error ");
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDSYMBOL);
+    break;
+  case ERR_INVALIDSTRING:
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDSTRING);
+    break;
+  case ERR_INVALIDNUMBER:
+    printf("%d-%d:%s\n", lineNo, colNo, ERM_INVALIDNUMBER);
+    break;
   }
-
-  printf("%s at: %d,%d\n", errorStr, lineNo, colNo);
+  exit(-1);
 }
+
