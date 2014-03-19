@@ -42,6 +42,7 @@ extern void compileGroupSt(void);
 extern void compileIfSt(void);
 extern void compileElseSt(void);
 extern void compileWhileSt(void);
+extern void compileDoSt(void);
 extern void compileForSt(void);
 extern void compileArguments(void);
 extern void compileArguments2(void);

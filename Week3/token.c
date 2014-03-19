@@ -31,7 +31,9 @@ struct {
   {"WHILE", KW_WHILE},
   {"DO", KW_DO},
   {"FOR", KW_FOR},
-  {"TO", KW_TO}
+  {"TO", KW_TO},
+  {"STRING", KW_STR},
+  {"FLOAT", KW_FLOAT}
 };
 
 int keywordEq(char *kw, char *string) {
@@ -62,8 +64,10 @@ char *tokenToString(TokenType tokenType) {
   switch (tokenType) {
   case TK_NONE: return "None";
   case TK_IDENT: return "an identification";
-  case TK_NUMBER: return "a number";
+  case TK_INT: return "a integer";
+  case TK_FLOAT: return "a float";
   case TK_CHAR: return "a constant char";
+  case TK_STRING: return "a string";
   case TK_EOF: return "end of file";
 
   case KW_PROGRAM: return "keyword PROGRAM";
@@ -86,6 +90,8 @@ char *tokenToString(TokenType tokenType) {
   case KW_DO: return "keyword DO";
   case KW_FOR: return "keyword FOR";
   case KW_TO: return "keyword TO";
+  case KW_STR: return "keyword STRING";
+  case KW_FLOAT: return "keyword FLOAT";
 
   case SB_SEMICOLON: return "\';\'";
   case SB_COLON: return "\':\'";
@@ -106,6 +112,7 @@ char *tokenToString(TokenType tokenType) {
   case SB_RPAR: return "\')\'";
   case SB_LSEL: return "\'(.\'";
   case SB_RSEL: return "\'.)\'";
+  case SB_MOD: return "\'%\'";
   default: return "";
   }
 }

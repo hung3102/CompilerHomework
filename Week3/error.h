@@ -12,6 +12,7 @@ typedef enum {
   ERR_ENDOFCOMMENT,
   ERR_IDENTTOOLONG,
   ERR_INVALIDCHARCONSTANT,
+  ERR_INVALIDSTR,
   ERR_INVALIDSYMBOL,
   ERR_INVALIDCONSTANT,
   ERR_INVALIDTYPE,
@@ -33,6 +34,7 @@ typedef enum {
 #define ERM_ENDOFCOMMENT "End of comment expected!"
 #define ERM_IDENTTOOLONG "Identification too long!"
 #define ERM_INVALIDCHARCONSTANT "Invalid const char!"
+#define ERM_INVALIDSTR "Invalid string!"
 #define ERM_INVALIDSYMBOL "Invalid symbol!"
 #define ERM_INVALIDCONSTANT "Invalid constant!"
 #define ERM_INVALIDTYPE "Invalid type!"

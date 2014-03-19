@@ -162,12 +162,16 @@ void compileProcDecl(void) {
 
 void compileUnsignedConstant(void) {
   switch (lookAhead->tokenType){
-  case TK_NUMBER:
-    eat(TK_NUMBER); break;
+  case TK_INT:
+    eat(TK_INT); break;
+  case TK_FLOAT:
+    eat(TK_FLOAT); break;
   case TK_CHAR:
     eat(TK_CHAR); break;
   case TK_IDENT:
     eat(TK_IDENT); break;
+  case TK_STRING:
+    eat(TK_STRING); break;
   default:
     error(ERR_INVALIDCONSTANT, lookAhead->lineNo, lookAhead->colNo);
   }
@@ -186,6 +190,9 @@ void compileConstant(void) {
   case TK_CHAR:
     eat(TK_CHAR);
     break;
+  case TK_STRING:
+    eat(TK_STRING);
+    break;
   default:
     compileConstant2();
   }
@@ -193,8 +200,10 @@ void compileConstant(void) {
 
 void compileConstant2(void) {
   switch(lookAhead->tokenType){
-  case TK_NUMBER:
-    eat(TK_NUMBER); break;
+  case TK_FLOAT:
+    eat(TK_FLOAT); break;
+  case TK_INT:
+    eat(TK_INT); break;
   case TK_IDENT:
     eat(TK_IDENT); break;
   default:
@@ -206,12 +215,16 @@ void compileType(void) {
   switch(lookAhead->tokenType){
   case KW_INTEGER:
     eat(KW_INTEGER); break;
+  case KW_FLOAT:
+    eat(KW_FLOAT); break;
   case KW_CHAR:
     eat(KW_CHAR); break;
+  case KW_STR:
+    eat(KW_STR); break;
   case KW_ARRAY:
     eat(KW_ARRAY);
     eat(SB_LSEL);
-    eat(TK_NUMBER);
+    eat(TK_INT);
     eat(SB_RSEL);
     eat(KW_OF);
     compileType();
@@ -227,8 +240,12 @@ void compileBasicType(void) {
   switch (lookAhead->tokenType){
   case KW_INTEGER:
     eat(KW_INTEGER); break;
+  case KW_FLOAT:
+    eat(KW_FLOAT); break;
   case KW_CHAR:
     eat(KW_CHAR); break;
+  case KW_STR:
+    eat(KW_STR); break;
   default:
     error(ERR_INVALIDBASICTYPE, lookAhead->lineNo, lookAhead->colNo);
   }
@@ -299,6 +316,9 @@ void compileStatement(void) {
   case KW_WHILE:
     compileWhileSt();
     break;
+  case KW_DO:
+    compileDoSt();
+    break;
   case KW_FOR:
     compileForSt();
     break;
@@ -361,7 +381,17 @@ void compileWhileSt(void) {
   compileCondition();
   eat(KW_DO);
   compileStatement();
-  assert("While statement pased ....");
+  assert("While statement parsed ....");
+}
+
+void compileDoSt(void) {
+  assert("Parsing a do statement ....");
+  eat(KW_DO);
+  compileStatement();
+  eat(KW_WHILE);
+  compileCondition();
+  eat(SB_SEMICOLON);
+  assert("Do statement pased ....");
 }
 
 void compileForSt(void) {
@@ -471,6 +501,11 @@ void compileTerm2(void) {
     compileFactor();
     compileTerm2();
     break;
+  case SB_MOD:
+    eat(SB_MOD);
+    compileFactor();
+    compileTerm2();
+    break;
   default:
     break;
   }
@@ -488,7 +523,9 @@ void compileFactor(void) {
     compileExpression();
     eat(SB_RPAR);
     break;
-  case TK_NUMBER:
+  case TK_STRING:
+  case TK_INT:
+  case TK_FLOAT:
   case TK_CHAR:
     compileUnsignedConstant(); break;
   default:
